@@ -1,4 +1,5 @@
 class Chess
+
   attr_accessor :board, :files, :pieces, :positions, :check
  
   def initialize
@@ -231,6 +232,34 @@ class Chess
     pieces_checked
   end
 
+  def pawn_promotion
+    white_pawns = @positions[:White][:♙]
+    black_pawns = @positions[:Black][:♟︎]
+    white = white_pawns.filter { |pos| pos.split('_')[1] == 'h'}
+    black = black_pawns.filter { |pos| pos.split('_')[1] == 'a'}
+    return if white.empty? && black.empty?
+    unless white.empty?
+      remove_piece('Black', white[0], @positions)
+      queen = @positions[:White][:♕]
+      if queen.instance_of?(Array)
+        @queen.push(white[0])
+      else
+        @positions[:White][:♕] = [@positions[:White][:♕]]
+        @positions[:White][:♕].push(white[0])
+      end
+    end
+    unless black.empty?
+      remove_piece('White', black[0], @positions)
+      queen = @positions[:Black][:♛]
+      if queen.instance_of?(Array)
+        queen.push(black[0])
+      else
+        @positions[:Black][:♛] = [@positions[:Black][:♛]]
+        @positions[:Black][:♛].push(black[0])
+      end
+    end
+  end
+
   def update_position(piece, player, position, target)
     old_pos = @positions[player.to_sym][piece.to_sym]
     old_pos = old_pos.index(position)
@@ -372,6 +401,7 @@ class Chess
     path = path(piece, moves[0], target)
     return puts "You can't play there"  if path_check(path, player, piece, true) == false
     update_position(piece,player, moves[0], target)
+    pawn_promotion
     check = check_pieces(player)
     puts "Check #{player}" if check != false
     puts "Checkmate #{player}" if checkmate(check, player, true, true, true) == true
