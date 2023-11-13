@@ -213,4 +213,14 @@ describe Chess do
             expect(game.instance_variable_get(:@checkmate)).to eq(true)
         end
     end
+
+    #describe '#load_game' do
+    #    it 'loads the saved game file' do
+    #        allow(game).to receive(:gets).and_return('load', '0')
+    #        game.player_input
+    #        expect(game.instance_variable_get(:@positions)[:White].values.flatten).to include('4_c')
+    #        expect(game.instance_variable_get(:@positions)[:Black].values.flatten).to include('6_f')
+    #    end
+    #end
+
 end
