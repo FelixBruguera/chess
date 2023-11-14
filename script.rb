@@ -482,5 +482,5 @@ class Chess
 
 end
 
-game = Chess.new
-game.opponent
+# game = Chess.new
+# game.opponent
