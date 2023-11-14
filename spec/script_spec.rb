@@ -214,13 +214,22 @@ describe Chess do
         end
     end
 
-    #describe '#load_game' do
-    #    it 'loads the saved game file' do
-    #        allow(game).to receive(:gets).and_return('load', '0')
-    #        game.player_input
-    #        expect(game.instance_variable_get(:@positions)[:White].values.flatten).to include('4_c')
-    #        expect(game.instance_variable_get(:@positions)[:Black].values.flatten).to include('6_f')
-    #    end
-    #end
+    describe '#computer_moves' do
+        it 'returns Black valid moves' do
+            expect(game.computer_moves.flatten).to include(:♟︎, "1_g", "1_e")
+        end
+    end
+
+
+    describe '#pawn_promotion' do
+        it 'promotes the pawn to a queen' do
+            moves = ['p8d', 'p7e', 'r8c', 'p8d','r5c','p8c','p1c','p8b','p1d','p8a']
+            moves.each do |move|
+                allow(game).to receive(:gets).and_return(move)
+                game.player_input
+            end
+            expect(game.instance_variable_get(:@positions)[:Black][:♛]).to include('8_a')
+        end
+    end
 
 end
